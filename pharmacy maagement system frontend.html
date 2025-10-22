@@ -1,0 +1,818 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pharmacy Management System</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <!-- Login Page -->
+    <div id="loginPage" class="page active">
+        <div class="login-container">
+            <div class="login-left">
+                <div class="login-content">
+                    <h1>Pharmacy Management System</h1>
+                    <div class="caduceus-icon">
+                        <i class="fas fa-staff-snake"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="login-right">
+                <div class="close-btn">
+                    <i class="fas fa-times"></i>
+                </div>
+                <div class="login-form">
+                    <div class="medicine-icon">
+                        <i class="fas fa-pills"></i>
+                    </div>
+                    <h2>Sign In</h2>
+                    <form id="loginForm">
+                        <div class="form-group">
+                            <label for="username">User Name</label>
+                            <input type="text" id="username" name="username" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="password">Password</label>
+                            <input type="password" id="password" name="password" required>
+                        </div>
+                        <div class="form-buttons">
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fas fa-key"></i>
+                                Sign In
+                            </button>
+                            <button type="button" class="btn btn-primary" onclick="resetForm()">
+                                <i class="fas fa-redo"></i>
+                                Reset
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Application -->
+    <div id="mainApp" class="page">
+        <!-- Header -->
+        <div class="header">
+            <div class="header-content">
+                <span class="slide-number">1/16</span>
+                <h1>Pharmacy Management System in CSharp (C#, Visual Studio, MySql) Complete Project</h1>
+                <div class="header-controls">
+                    <button class="subscribe-btn">SUBSCRIBE</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Layout -->
+        <div class="main-layout">
+            <!-- Sidebar -->
+            <div class="sidebar" id="sidebar">
+                <div class="sidebar-header">
+                    <div class="user-icon">
+                        <i class="fas fa-user-tie"></i>
+                    </div>
+                    <h3 id="userRole">Administrator</h3>
+                </div>
+                
+                <nav class="sidebar-nav" id="sidebarNav">
+                    <!-- Admin Navigation -->
+                    <ul id="adminNav" class="nav-menu">
+                        <li><a href="#" onclick="showPage('dashboard')" class="nav-link active">
+                            <i class="fas fa-chart-bar"></i>
+                            <span>Dashboard</span>
+                        </a></li>
+                        <li><a href="#" onclick="showPage('addUser')" class="nav-link">
+                            <i class="fas fa-user-plus"></i>
+                            <span>Add User</span>
+                        </a></li>
+                        <li><a href="#" onclick="showPage('viewUser')" class="nav-link">
+                            <i class="fas fa-users"></i>
+                            <span>View User</span>
+                        </a></li>
+                        <li><a href="#" onclick="showPage('profile')" class="nav-link">
+                            <i class="fas fa-user"></i>
+                            <span>Profile</span>
+                        </a></li>
+                        <li><a href="#" onclick="logout()" class="nav-link">
+                            <i class="fas fa-sign-out-alt"></i>
+                            <span>Log Out</span>
+                        </a></li>
+                    </ul>
+                    
+                    <!-- Pharmacist Navigation -->
+                    <ul id="pharmacistNav" class="nav-menu" style="display: none;">
+                        <li><a href="#" onclick="showPage('pharmacistDashboard')" class="nav-link active">
+                            <i class="fas fa-chart-bar"></i>
+                            <span>Dashboard</span>
+                        </a></li>
+                        <li><a href="#" onclick="showPage('addMedicine')" class="nav-link">
+                            <i class="fas fa-plus-circle"></i>
+                            <span>Add Medicine</span>
+                        </a></li>
+                        <li><a href="#" onclick="showPage('viewMedicine')" class="nav-link">
+                            <i class="fas fa-search"></i>
+                            <span>View Medicine</span>
+                        </a></li>
+                        <li><a href="#" onclick="showPage('modifyMedicine')" class="nav-link">
+                            <i class="fas fa-edit"></i>
+                            <span>Modify Medicine</span>
+                        </a></li>
+                        <li><a href="#" onclick="showPage('medicineValidityCheck')" class="nav-link">
+                            <i class="fas fa-check-circle"></i>
+                            <span>Medicine Validity Check</span>
+                        </a></li>
+                        <li><a href="#" onclick="showPage('sellMedicine')" class="nav-link">
+                            <i class="fas fa-shopping-cart"></i>
+                            <span>Sell Medicine</span>
+                        </a></li>
+                        <li><a href="#" onclick="logout()" class="nav-link">
+                            <i class="fas fa-sign-out-alt"></i>
+                            <span>Log Out</span>
+                        </a></li>
+                    </ul>
+                </nav>
+                
+                <div class="sidebar-footer">
+                    <span>btechdays</span>
+                </div>
+            </div>
+
+            <!-- Main Content -->
+            <div class="main-content">
+                <!-- Dashboard Page -->
+                <div id="dashboard" class="content-page active">
+                    <div class="page-header">
+                        <h2>Dashboard</h2>
+                    </div>
+                    <div class="dashboard-content">
+                        <div class="dashboard-cards">
+                            <div class="card admin-card">
+                                <h3>Admin User</h3>
+                                <div class="task-section">
+                                    <h4>Task Performed</h4>
+                                    <ul>
+                                        <li>*Add User</li>
+                                        <li>*View User</li>
+                                        <li>*Profile Management</li>
+                                    </ul>
+                                </div>
+                                <p>Admin is the role with the highest level of access. Admins can add content and access all items in the Admin Toolbar. This means that Admins can control settings like the design etc. They can add and delete other admin users, and can approve or deny edits made by user.</p>
+                                <div class="count-section">
+                                    <label>Total Number of Admin User</label>
+                                    <div class="count-box">2</div>
+                                </div>
+                            </div>
+                            
+                            <div class="card pharmacist-card">
+                                <h3>Pharmacist</h3>
+                                <div class="task-section">
+                                    <h4>Task Performed</h4>
+                                    <ul>
+                                        <li>*Add Medicines</li>
+                                        <li>*View Medicines</li>
+                                        <li>*Medicine Management</li>
+                                        <li>*Sell Medicine</li>
+                                    </ul>
+                                </div>
+                                <p>Admin is the role with the highest level of access. Admins can add content and access all items in the Admin Toolbar. This means that Admins can control settings like the design etc. They can add and delete other admin users, and can approve or deny edits made by user.</p>
+                                <div class="count-section">
+                                    <label>Total Number of Pharma User</label>
+                                    <div class="count-box">1</div>
+                                </div>
+                            </div>
+                            
+                            <div class="card customer-card">
+                                <h3>Customer</h3>
+                                <div class="task-section">
+                                    <h4>Task Performed</h4>
+                                    <ul>
+                                        <li>*Add User</li>
+                                        <li>*View User</li>
+                                        <li>*Profile Management</li>
+                                    </ul>
+                                </div>
+                                <p>Admin is the role with the highest level of access. Admins can add content and access all items in the Admin Toolbar. This means that Admins can control settings like the design etc. They can add and delete other admin users, and can approve or deny edits made by user.</p>
+                                <div class="count-section">
+                                    <label>Total Number of Customer</label>
+                                    <div class="count-box">0</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Add User Page -->
+                <div id="addUser" class="content-page">
+                    <div class="page-header">
+                        <h2>Add User</h2>
+                    </div>
+                    <div class="form-container">
+                        <form id="addUserForm">
+                            <div class="form-columns">
+                                <div class="form-column">
+                                    <div class="form-group">
+                                        <label for="userRole">User Role</label>
+                                        <select id="userRole" name="userRole">
+                                            <option value="Pharmacist">Pharmacist</option>
+                                            <option value="Administrator">Administrator</option>
+                                            <option value="Customer">Customer</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="userName">Name</label>
+                                        <input type="text" id="userName" name="userName" placeholder="Enter name">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="userDOB">DOB (Date Of Birth)</label>
+                                        <input type="date" id="userDOB" name="userDOB">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="userMobile">Mobile No</label>
+                                        <input type="tel" id="userMobile" name="userMobile" placeholder="Enter mobile number">
+                                    </div>
+                                </div>
+                                <div class="form-column">
+                                    <div class="form-group">
+                                        <label for="userEmail">Email Address</label>
+                                        <input type="email" id="userEmail" name="userEmail" placeholder="Enter email">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="userUsername">Username</label>
+                                        <input type="text" id="userUsername" name="userUsername" placeholder="Enter username">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="userPassword">Password</label>
+                                        <input type="password" id="userPassword" name="userPassword" placeholder="Enter password">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-buttons">
+                                <button type="submit" class="btn btn-primary">
+                                    <i class="fas fa-arrow-up"></i>
+                                    Sign Up
+                                </button>
+                                <button type="button" class="btn btn-primary" onclick="resetAddUserForm()">
+                                    <i class="fas fa-redo"></i>
+                                    Reset
+                                </button>
+                            </div>
+                            <p class="form-note">*Check the USER ROLE before Sign Up.</p>
+                        </form>
+                    </div>
+                </div>
+
+                <!-- View User Page -->
+                <div id="viewUser" class="content-page">
+                    <div class="page-header">
+                        <h2>View User</h2>
+                    </div>
+                    <div class="view-container">
+                        <div class="search-section">
+                            <label for="searchUsername">Username</label>
+                            <input type="text" id="searchUsername" placeholder="Search---">
+                        </div>
+                        <div class="table-container">
+                            <table class="data-table">
+                                <thead>
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>Role</th>
+                                        <th>Name</th>
+                                        <th>Date</th>
+                                        <th>Phone</th>
+                                        <th>Email</th>
+                                        <th>Username</th>
+                                        <th>Password</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>2</td>
+                                        <td>Pharmacist</td>
+                                        <td>kumar</td>
+                                        <td>Thursday, Octob...</td>
+                                        <td>123456</td>
+                                        <td>btechdays.care@...</td>
+                                        <td>kumar</td>
+                                        <td>kumar</td>
+                                    </tr>
+                                    <tr>
+                                        <td>7</td>
+                                        <td>Administrator</td>
+                                        <td>BTech Days</td>
+                                        <td>Thursday, July 18...</td>
+                                        <td>5656562323</td>
+                                        <td>btechdays.care@...</td>
+                                        <td>btechdays</td>
+                                        <td>btechdays</td>
+                                    </tr>
+                                    <tr>
+                                        <td>9</td>
+                                        <td>Pharmacist</td>
+                                        <td>sdf</td>
+                                        <td>Thursday, Octob...</td>
+                                        <td>123456</td>
+                                        <td>sfdsfd</td>
+                                        <td>sdsfdd</td>
+                                        <td>sfdsfd</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="action-buttons">
+                            <button class="btn btn-danger">
+                                <i class="fas fa-trash"></i>
+                                Delete
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Profile Page -->
+                <div id="profile" class="content-page">
+                    <div class="page-header">
+                        <h2>Profile</h2>
+                    </div>
+                    <div class="profile-container">
+                        <div class="profile-icon">
+                            <i class="fas fa-user-circle"></i>
+                            <span>btechdays</span>
+                        </div>
+                        <div class="profile-form">
+                            <form id="profileForm">
+                                <div class="form-group">
+                                    <label for="profileRole">User Role</label>
+                                    <select id="profileRole" name="profileRole">
+                                        <option value="Administrator">Administrator</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="profileName">Name</label>
+                                    <input type="text" id="profileName" name="profileName" value="BTech Days">
+                                </div>
+                                <div class="form-group">
+                                    <label for="profileDOB">DOB (Date Of Birth)</label>
+                                    <input type="text" id="profileDOB" name="profileDOB" value="Thursday, July 18, 1991">
+                                </div>
+                                <div class="form-group">
+                                    <label for="profileMobile">Mobile No</label>
+                                    <input type="tel" id="profileMobile" name="profileMobile" value="5656562323">
+                                </div>
+                                <div class="form-group">
+                                    <label for="profileEmail">Email Address</label>
+                                    <input type="email" id="profileEmail" name="profileEmail" value="btechdays.care@gmail.com">
+                                </div>
+                                <div class="form-group">
+                                    <label for="profilePassword">Password</label>
+                                    <input type="password" id="profilePassword" name="profilePassword" value="btechdays">
+                                </div>
+                                <div class="form-buttons">
+                                    <button type="submit" class="btn btn-primary">
+                                        <i class="fas fa-sync-alt"></i>
+                                        Update
+                                    </button>
+                                    <button type="button" class="btn btn-primary" onclick="resetProfileForm()">
+                                        <i class="fas fa-redo"></i>
+                                        Reset
+                                    </button>
+                                </div>
+                                <p class="form-note">*Check the details before UPDATION.</p>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Pharmacist Dashboard -->
+                <div id="pharmacistDashboard" class="content-page">
+                    <div class="page-header">
+                        <h2>Dashboard</h2>
+                    </div>
+                    <div class="pharmacist-dashboard">
+                        <div class="dashboard-illustration">
+                            <div class="medical-equipment">
+                                <i class="fas fa-stethoscope"></i>
+                                <i class="fas fa-medkit"></i>
+                                <i class="fas fa-pills"></i>
+                                <i class="fas fa-mobile-alt"></i>
+                            </div>
+                        </div>
+                        <div class="validity-chart">
+                            <h3>Medicine Validity Chart</h3>
+                            <div class="chart-container">
+                                <div class="chart-bar expired">
+                                    <div class="bar" style="height: 40%;"></div>
+                                    <span>Expired Medicines</span>
+                                </div>
+                                <div class="chart-bar valid">
+                                    <div class="bar" style="height: 80%;"></div>
+                                    <span>Valid Medicines</span>
+                                </div>
+                            </div>
+                            <div class="chart-legend">
+                                <div class="legend-item">
+                                    <span class="legend-color expired"></span>
+                                    <span>Expired Medicines</span>
+                                </div>
+                                <div class="legend-item">
+                                    <span class="legend-color valid"></span>
+                                    <span>Valid Medicines</span>
+                                </div>
+                            </div>
+                            <button class="btn btn-primary">
+                                <i class="fas fa-sync-alt"></i>
+                                Reload
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Add Medicine Page -->
+                <div id="addMedicine" class="content-page">
+                    <div class="page-header">
+                        <h2>Add Medicine</h2>
+                    </div>
+                    <div class="form-container">
+                        <form id="addMedicineForm">
+                            <div class="form-columns">
+                                <div class="form-column">
+                                    <div class="form-group">
+                                        <label for="medicineId">Medicine ID</label>
+                                        <input type="text" id="medicineId" name="medicineId" value="123">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="medicineName">Medicine Name</label>
+                                        <input type="text" id="medicineName" name="medicineName" placeholder="Enter medicine name">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="medicineNumber">Medicine Number</label>
+                                        <input type="text" id="medicineNumber" name="medicineNumber" placeholder="Enter medicine number">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="manufacturingDate">Manufacturing Date</label>
+                                        <input type="date" id="manufacturingDate" name="manufacturingDate" value="2020-10-01">
+                                    </div>
+                                </div>
+                                <div class="form-column">
+                                    <div class="form-group">
+                                        <label for="expireDate">Expire Date</label>
+                                        <input type="date" id="expireDate" name="expireDate" value="2020-10-01">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="quantity">Quantity</label>
+                                        <input type="number" id="quantity" name="quantity" placeholder="Enter quantity">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="pricePerUnit">Price Per Unit</label>
+                                        <input type="number" id="pricePerUnit" name="pricePerUnit" placeholder="Enter price per unit">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-buttons">
+                                <button type="submit" class="btn btn-primary">
+                                    <i class="fas fa-plus"></i>
+                                    Add
+                                </button>
+                                <button type="button" class="btn btn-primary" onclick="resetAddMedicineForm()">
+                                    <i class="fas fa-redo"></i>
+                                    Reset
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+                <!-- View Medicine Page -->
+                <div id="viewMedicine" class="content-page">
+                    <div class="page-header">
+                        <h2>View Medicine</h2>
+                    </div>
+                    <div class="view-container">
+                        <div class="search-section">
+                            <label for="searchMedicineName">Medicine Name</label>
+                            <input type="text" id="searchMedicineName" placeholder="Search...">
+                        </div>
+                        <div class="table-container">
+                            <table class="data-table">
+                                <thead>
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>Medicine ID</th>
+                                        <th>Name</th>
+                                        <th>Type</th>
+                                        <th>Manufacturing Date</th>
+                                        <th>Expiry Date</th>
+                                        <th>Price</th>
+                                        <th>Quantity</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>1</td>
+                                        <td>123456</td>
+                                        <td>cbc</td>
+                                        <td>D500</td>
+                                        <td>7/7/2011</td>
+                                        <td>4/14/2022</td>
+                                        <td>140</td>
+                                        <td>200</td>
+                                    </tr>
+                                    <tr>
+                                        <td>2</td>
+                                        <td>34521</td>
+                                        <td>abc</td>
+                                        <td>abc</td>
+                                        <td>10/1/2020</td>
+                                        <td>2/16/2021</td>
+                                        <td>8</td>
+                                        <td>250</td>
+                                    </tr>
+                                    <tr>
+                                        <td>6</td>
+                                        <td>512</td>
+                                        <td>p200</td>
+                                        <td>552336</td>
+                                        <td>6/23/2020</td>
+                                        <td class="expired">5/20/2021</td>
+                                        <td>150</td>
+                                        <td>25</td>
+                                    </tr>
+                                    <tr>
+                                        <td>7</td>
+                                        <td>5555</td>
+                                        <td>N30</td>
+                                        <td>456321</td>
+                                        <td>7/14/2020</td>
+                                        <td class="expired">3/24/2022</td>
+                                        <td>603</td>
+                                        <td>243</td>
+                                    </tr>
+                                    <tr>
+                                        <td>9</td>
+                                        <td>11111</td>
+                                        <td>xyz</td>
+                                        <td>123456</td>
+                                        <td>6/9/2020</td>
+                                        <td>2/16/2050</td>
+                                        <td>165</td>
+                                        <td>167</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="action-buttons">
+                            <button class="btn btn-danger">
+                                <i class="fas fa-trash"></i>
+                                Delete
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Modify Medicine Page -->
+                <div id="modifyMedicine" class="content-page">
+                    <div class="page-header">
+                        <h2>Update Medicine</h2>
+                    </div>
+                    <div class="form-container">
+                        <form id="modifyMedicineForm">
+                            <div class="form-columns">
+                                <div class="form-column">
+                                    <div class="form-group">
+                                        <label for="modifyMedicineId">Medicine ID</label>
+                                        <input type="text" id="modifyMedicineId" name="modifyMedicineId" value="11111">
+                                    </div>
+                                    <button type="button" class="btn btn-primary search-btn">
+                                        <i class="fas fa-search"></i>
+                                        Search
+                                    </button>
+                                    <div class="form-group">
+                                        <label for="modifyMedicineName">Medicine Name</label>
+                                        <input type="text" id="modifyMedicineName" name="modifyMedicineName">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="modifyMedicineNumber">Medicine Number</label>
+                                        <input type="text" id="modifyMedicineNumber" name="modifyMedicineNumber">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="modifyManufacturingDate">Manufacturing Date</label>
+                                        <input type="date" id="modifyManufacturingDate" name="modifyManufacturingDate" value="2020-10-01">
+                                    </div>
+                                </div>
+                                <div class="form-column">
+                                    <div class="form-group">
+                                        <label for="modifyExpireDate">Expire Date</label>
+                                        <input type="date" id="modifyExpireDate" name="modifyExpireDate" value="2020-10-01">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="availableQuantity">Available Quantity</label>
+                                        <input type="number" id="availableQuantity" name="availableQuantity">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="addQuantity">Add Quantity</label>
+                                        <input type="number" id="addQuantity" name="addQuantity" value="0" class="highlight-input">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="modifyPricePerUnit">Price Per Unit</label>
+                                        <input type="number" id="modifyPricePerUnit" name="modifyPricePerUnit">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-buttons">
+                                <button type="submit" class="btn btn-primary">
+                                    <i class="fas fa-sync-alt"></i>
+                                    Update
+                                </button>
+                                <button type="button" class="btn btn-primary" onclick="resetModifyMedicineForm()">
+                                    <i class="fas fa-redo"></i>
+                                    Reset
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+                <!-- Medicine Validity Check Page -->
+                <div id="medicineValidityCheck" class="content-page">
+                    <div class="page-header">
+                        <h2>Medicine Validity Check</h2>
+                    </div>
+                    <div class="validity-container">
+                        <div class="check-section">
+                            <label>Check</label>
+                            <select id="validityCheckType">
+                                <option value="valid">Valid Medicines</option>
+                                <option value="expired">Expired Medicines</option>
+                                <option value="expiring">Expiring Soon</option>
+                            </select>
+                        </div>
+                        <div class="validity-results">
+                            <h3>Valid Medicines</h3>
+                            <div class="table-container">
+                                <table class="data-table">
+                                    <thead>
+                                        <tr>
+                                            <th>ID</th>
+                                            <th>Medicine ID</th>
+                                            <th>Name</th>
+                                            <th>Type</th>
+                                            <th>Manufacturing Date</th>
+                                            <th>Expiry Date</th>
+                                            <th>Price</th>
+                                            <th>Quantity</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>1</td>
+                                            <td>123456</td>
+                                            <td>cbc</td>
+                                            <td>D500</td>
+                                            <td>7/7/2011</td>
+                                            <td>4/14/2022</td>
+                                            <td>140</td>
+                                            <td>200</td>
+                                        </tr>
+                                        <tr>
+                                            <td>2</td>
+                                            <td>34521</td>
+                                            <td>abc</td>
+                                            <td>abc</td>
+                                            <td>10/1/2020</td>
+                                            <td>2/16/2021</td>
+                                            <td>8</td>
+                                            <td>250</td>
+                                        </tr>
+                                        <tr>
+                                            <td>6</td>
+                                            <td>512</td>
+                                            <td>p200</td>
+                                            <td>552336</td>
+                                            <td>6/23/2020</td>
+                                            <td class="expired">5/20/2021</td>
+                                            <td>150</td>
+                                            <td>25</td>
+                                        </tr>
+                                        <tr>
+                                            <td>7</td>
+                                            <td>5555</td>
+                                            <td>N30</td>
+                                            <td>456321</td>
+                                            <td>7/14/2020</td>
+                                            <td class="expired">3/24/2022</td>
+                                            <td>603</td>
+                                            <td>243</td>
+                                        </tr>
+                                        <tr>
+                                            <td>9</td>
+                                            <td>11111</td>
+                                            <td>xyz</td>
+                                            <td>123456</td>
+                                            <td>6/9/2020</td>
+                                            <td>2/16/2050</td>
+                                            <td>165</td>
+                                            <td>167</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Sell Medicine Page -->
+                <div id="sellMedicine" class="content-page">
+                    <div class="page-header">
+                        <h2>Sell Medicine</h2>
+                    </div>
+                    <div class="sell-container">
+                        <div class="sell-form">
+                            <div class="form-row">
+                                <div class="search-section">
+                                    <input type="text" id="medicineSearch" placeholder="Search medicine...">
+                                    <div class="medicine-list">
+                                        <div class="medicine-item">abc</div>
+                                        <div class="medicine-item">cbc</div>
+                                        <div class="medicine-item">N30</div>
+                                        <div class="medicine-item">p200</div>
+                                    </div>
+                                </div>
+                                <div class="medicine-details">
+                                    <div class="form-group">
+                                        <label for="sellMedicineId">Medicine ID</label>
+                                        <input type="text" id="sellMedicineId" name="sellMedicineId">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="sellMedicineName">Medicine Name</label>
+                                        <input type="text" id="sellMedicineName" name="sellMedicineName">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="sellExpireDate">Expire Date</label>
+                                        <input type="date" id="sellExpireDate" name="sellExpireDate" value="2020-10-01">
+                                    </div>
+                                </div>
+                                <div class="pricing-details">
+                                    <div class="form-group">
+                                        <label for="sellPricePerUnit">Price Per Unit</label>
+                                        <input type="number" id="sellPricePerUnit" name="sellPricePerUnit">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="sellNoOfUnits">No of Units</label>
+                                        <input type="number" id="sellNoOfUnits" name="sellNoOfUnits">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="sellTotalPrice">Total Price</label>
+                                        <input type="number" id="sellTotalPrice" name="sellTotalPrice" readonly>
+                                    </div>
+                                </div>
+                            </div>
+                            <button class="btn btn-primary add-to-cart-btn">
+                                <i class="fas fa-shopping-cart"></i>
+                                Add to Cart
+                            </button>
+                        </div>
+                        
+                        <div class="cart-section">
+                            <h3>Shopping Cart</h3>
+                            <div class="cart-table">
+                                <table class="data-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Medicine Id</th>
+                                            <th>Name</th>
+                                            <th>Expiry Date</th>
+                                            <th>Price Per Unit</th>
+                                            <th>No of Units</th>
+                                            <th>Total Price</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="cartTableBody">
+                                        <!-- Cart items will be added here -->
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="cart-actions">
+                                <button class="btn btn-danger">
+                                    <i class="fas fa-minus"></i>
+                                    Remove
+                                </button>
+                                <div class="total-amount">
+                                    <span>Rs. <span id="totalAmount">00</span></span>
+                                </div>
+                                <button class="btn btn-primary">
+                                    <i class="fas fa-print"></i>
+                                    Purchase & Print
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
