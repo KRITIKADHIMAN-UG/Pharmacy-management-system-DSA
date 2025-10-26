@@ -156,5 +156,7 @@ When everything is working correctly, you should see:
 - ✅ Database initialized successfully
 - ✅ HTTP server created
 - 🌐 Server running at http://localhost:8000
+run everything here file:///C:/Users/hlpuy/Desktop/Pharmacy/frontend.html
+
 
 **Enjoy using your Pharmacy Management System!** 🏥💊
