@@ -1,0 +1,979 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pharmacy Management System - Frontend</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: #333;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 20px;
+            border-radius: 15px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+
+        .header h1 {
+            color: #2c3e50;
+            margin-bottom: 10px;
+            font-size: 2.5rem;
+        }
+
+        .header p {
+            color: #7f8c8d;
+            font-size: 1.1rem;
+        }
+
+        .login-container {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            max-width: 400px;
+            margin: 0 auto;
+        }
+
+        .login-form h2 {
+            text-align: center;
+            margin-bottom: 30px;
+            color: #2c3e50;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: #555;
+            font-weight: 500;
+        }
+
+        .form-group input, .form-group select {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e1e8ed;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: border-color 0.3s;
+        }
+
+        .form-group input:focus, .form-group select:focus {
+            outline: none;
+            border-color: #3498db;
+        }
+
+        .btn {
+            width: 100%;
+            padding: 12px;
+            background: #3498db;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .btn:hover {
+            background: #2980b9;
+        }
+
+        .btn-primary {
+            background: #3498db;
+        }
+
+        .btn-success {
+            background: #27ae60;
+        }
+
+        .btn-danger {
+            background: #e74c3c;
+        }
+
+        .dashboard {
+            display: none;
+            background: rgba(255, 255, 255, 0.95);
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .dashboard-card {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+
+        .dashboard-card h3 {
+            color: #2c3e50;
+            margin-bottom: 10px;
+        }
+
+        .dashboard-card .number {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #3498db;
+        }
+
+        .section {
+            margin-bottom: 30px;
+        }
+
+        .section h3 {
+            color: #2c3e50;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #3498db;
+        }
+
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .data-table th {
+            background: #3498db;
+            color: white;
+            padding: 15px;
+            text-align: left;
+        }
+
+        .data-table td {
+            padding: 12px 15px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .data-table tr:hover {
+            background: #f8f9fa;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .alert {
+            padding: 15px;
+            margin-bottom: 20px;
+            border-radius: 8px;
+            border-left: 4px solid;
+        }
+
+        .alert-success {
+            background: #d4edda;
+            border-color: #27ae60;
+            color: #155724;
+        }
+
+        .alert-error {
+            background: #f8d7da;
+            border-color: #e74c3c;
+            color: #721c24;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .status-available {
+            color: #27ae60;
+            font-weight: bold;
+        }
+
+        .status-occupied {
+            color: #e74c3c;
+            font-weight: bold;
+        }
+
+        .status-low-stock {
+            color: #f39c12;
+            font-weight: bold;
+        }
+
+        .status-expired {
+            color: #e74c3c;
+            font-weight: bold;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 10px;
+            }
+            
+            .header h1 {
+                font-size: 2rem;
+            }
+            
+            .dashboard-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <h1><i class="fas fa-pills"></i> Pharmacy Management System</h1>
+            <p>Complete Healthcare Management Solution</p>
+        </div>
+
+        <!-- Login Form -->
+        <div id="loginForm" class="login-container">
+            <form onsubmit="login(event)">
+                <h2><i class="fas fa-sign-in-alt"></i> Login</h2>
+                
+                <div class="form-group">
+                    <label for="username">Username</label>
+                    <input type="text" id="username" name="username" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" name="password" required>
+                </div>
+                
+                <button type="submit" class="btn btn-primary">
+                    <i class="fas fa-sign-in-alt"></i> Login
+                </button>
+            </form>
+            
+            <div style="margin-top: 20px; text-align: center;">
+                <h4>Test Credentials:</h4>
+                <p><strong>Admin:</strong> admin / admin123</p>
+                <p><strong>Doctor:</strong> doctor / doctor123</p>
+                <p><strong>Patient:</strong> patient / patient123</p>
+            </div>
+        </div>
+
+        <!-- Dashboard -->
+        <div id="dashboard" class="dashboard">
+            <div style="text-align: right; margin-bottom: 20px;">
+                <button onclick="logout()" class="btn btn-danger">
+                    <i class="fas fa-sign-out-alt"></i> Logout
+                </button>
+            </div>
+
+            <!-- Dashboard Statistics -->
+            <div class="section">
+                <h3><i class="fas fa-chart-bar"></i> Dashboard Statistics</h3>
+                <div class="dashboard-grid">
+                    <div class="dashboard-card">
+                        <h3>Total Patients</h3>
+                        <div class="number" id="totalPatients">0</div>
+                    </div>
+                    <div class="dashboard-card">
+                        <h3>Total Doctors</h3>
+                        <div class="number" id="totalDoctors">0</div>
+                    </div>
+                    <div class="dashboard-card">
+                        <h3>Total Beds</h3>
+                        <div class="number" id="totalBeds">0</div>
+                    </div>
+                    <div class="dashboard-card">
+                        <h3>Available Beds</h3>
+                        <div class="number" id="availableBeds">0</div>
+                    </div>
+                    <div class="dashboard-card">
+                        <h3>Total Medicines</h3>
+                        <div class="number" id="totalMedicines">0</div>
+                    </div>
+                    <div class="dashboard-card">
+                        <h3>Low Stock Medicines</h3>
+                        <div class="number" id="lowStockMedicines">0</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Patient Management -->
+            <div class="section">
+                <h3><i class="fas fa-user-injured"></i> Patient Management</h3>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="patientFirstName">First Name</label>
+                        <input type="text" id="patientFirstName" placeholder="Enter first name">
+                    </div>
+                    <div class="form-group">
+                        <label for="patientLastName">Last Name</label>
+                        <input type="text" id="patientLastName" placeholder="Enter last name">
+                    </div>
+                    <div class="form-group">
+                        <label for="patientAge">Age</label>
+                        <input type="number" id="patientAge" placeholder="Enter age">
+                    </div>
+                    <div class="form-group">
+                        <label for="patientGender">Gender</label>
+                        <select id="patientGender">
+                            <option value="">Select Gender</option>
+                            <option value="Male">Male</option>
+                            <option value="Female">Female</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="patientPhone">Phone</label>
+                        <input type="tel" id="patientPhone" placeholder="Enter phone number">
+                    </div>
+                    <div class="form-group">
+                        <label for="patientEmail">Email</label>
+                        <input type="email" id="patientEmail" placeholder="Enter email">
+                    </div>
+                    <div class="form-group">
+                        <label for="patientHistory">Medical History</label>
+                        <input type="text" id="patientHistory" placeholder="Enter medical history">
+                    </div>
+                    <div class="form-group">
+                        <label for="patientAllergies">Allergies</label>
+                        <input type="text" id="patientAllergies" placeholder="Enter allergies">
+                    </div>
+                </div>
+                
+                <button onclick="addPatient()" class="btn btn-success">
+                    <i class="fas fa-plus"></i> Add Patient
+                </button>
+                
+                <table class="data-table" style="margin-top: 20px;">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Name</th>
+                            <th>Age</th>
+                            <th>Gender</th>
+                            <th>Phone</th>
+                            <th>Email</th>
+                            <th>Medical History</th>
+                            <th>Allergies</th>
+                        </tr>
+                    </thead>
+                    <tbody id="patientsTable">
+                        <!-- Patient data will be loaded here -->
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Doctor Management -->
+            <div class="section">
+                <h3><i class="fas fa-user-md"></i> Doctor Management</h3>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="doctorFirstName">First Name</label>
+                        <input type="text" id="doctorFirstName" placeholder="Enter first name">
+                    </div>
+                    <div class="form-group">
+                        <label for="doctorLastName">Last Name</label>
+                        <input type="text" id="doctorLastName" placeholder="Enter last name">
+                    </div>
+                    <div class="form-group">
+                        <label for="doctorSpecialization">Specialization</label>
+                        <input type="text" id="doctorSpecialization" placeholder="Enter specialization">
+                    </div>
+                    <div class="form-group">
+                        <label for="doctorPhone">Phone</label>
+                        <input type="tel" id="doctorPhone" placeholder="Enter phone number">
+                    </div>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="doctorEmail">Email</label>
+                        <input type="email" id="doctorEmail" placeholder="Enter email">
+                    </div>
+                    <div class="form-group">
+                        <label for="doctorShift">Shift</label>
+                        <select id="doctorShift">
+                            <option value="">Select Shift</option>
+                            <option value="Morning">Morning</option>
+                            <option value="Evening">Evening</option>
+                            <option value="Night">Night</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="doctorLicense">License Number</label>
+                        <input type="text" id="doctorLicense" placeholder="Enter license number">
+                    </div>
+                    <div class="form-group">
+                        <label>&nbsp;</label>
+                        <button onclick="addDoctor()" class="btn btn-success">
+                            <i class="fas fa-plus"></i> Add Doctor
+                        </button>
+                    </div>
+                </div>
+                
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Name</th>
+                            <th>Specialization</th>
+                            <th>Phone</th>
+                            <th>Email</th>
+                            <th>Shift</th>
+                            <th>License</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody id="doctorsTable">
+                        <!-- Doctor data will be loaded here -->
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Bed Management -->
+            <div class="section">
+                <h3><i class="fas fa-bed"></i> Bed Management</h3>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="bedNumber">Bed Number</label>
+                        <input type="text" id="bedNumber" placeholder="Enter bed number">
+                    </div>
+                    <div class="form-group">
+                        <label for="bedType">Bed Type</label>
+                        <select id="bedType">
+                            <option value="">Select Bed Type</option>
+                            <option value="general">General</option>
+                            <option value="icu">ICU</option>
+                            <option value="emergency">Emergency</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="bedWard">Ward</label>
+                        <input type="text" id="bedWard" placeholder="Enter ward">
+                    </div>
+                    <div class="form-group">
+                        <label>&nbsp;</label>
+                        <button onclick="addBed()" class="btn btn-success">
+                            <i class="fas fa-plus"></i> Add Bed
+                        </button>
+                    </div>
+                </div>
+                
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Bed Number</th>
+                            <th>Type</th>
+                            <th>Ward</th>
+                            <th>Status</th>
+                            <th>Patient ID</th>
+                            <th>Assigned At</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="bedsTable">
+                        <!-- Bed data will be loaded here -->
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Medicine Management -->
+            <div class="section">
+                <h3><i class="fas fa-pills"></i> Medicine Management</h3>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="medicineName">Medicine Name</label>
+                        <input type="text" id="medicineName" placeholder="Enter medicine name">
+                    </div>
+                    <div class="form-group">
+                        <label for="medicineExpiry">Expiry Date</label>
+                        <input type="date" id="medicineExpiry">
+                    </div>
+                    <div class="form-group">
+                        <label for="medicineQuantity">Quantity</label>
+                        <input type="number" id="medicineQuantity" placeholder="Enter quantity">
+                    </div>
+                    <div class="form-group">
+                        <label for="medicinePrice">Unit Price</label>
+                        <input type="number" step="0.01" id="medicinePrice" placeholder="Enter unit price">
+                    </div>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="medicineCategory">Category</label>
+                        <input type="text" id="medicineCategory" placeholder="Enter category">
+                    </div>
+                    <div class="form-group">
+                        <label for="medicineMinStock">Minimum Stock Level</label>
+                        <input type="number" id="medicineMinStock" placeholder="Enter minimum stock" value="10">
+                    </div>
+                    <div class="form-group">
+                        <label>&nbsp;</label>
+                        <button onclick="addMedicine()" class="btn btn-success">
+                            <i class="fas fa-plus"></i> Add Medicine
+                        </button>
+                    </div>
+                </div>
+                
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Name</th>
+                            <th>Expiry Date</th>
+                            <th>Quantity</th>
+                            <th>Unit Price</th>
+                            <th>Category</th>
+                            <th>Min Stock</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody id="medicinesTable">
+                        <!-- Medicine data will be loaded here -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Global variables
+        let currentUser = null;
+        let patients = [];
+        let doctors = [];
+        let beds = [];
+        let medicines = [];
+
+        // Sample data (simulated backend data)
+        function initializeData() {
+            patients = [
+                {id: 1, first_name: "Alice", last_name: "Johnson", age: 35, gender: "Female", phone: "123-456-7890", email: "alice@email.com", medical_history: "Diabetes, Hypertension", allergies: "Penicillin"},
+                {id: 2, first_name: "Bob", last_name: "Wilson", age: 42, gender: "Male", phone: "123-456-7891", email: "bob@email.com", medical_history: "Asthma", allergies: "None"}
+            ];
+            
+            doctors = [
+                {id: 1, first_name: "Dr. Sarah", last_name: "Brown", specialization: "Cardiology", phone: "123-456-7801", email: "sarah@hospital.com", shift: "Morning", license_number: "DOC001", is_available: true},
+                {id: 2, first_name: "Dr. Michael", last_name: "Davis", specialization: "Neurology", phone: "123-456-7802", email: "michael@hospital.com", shift: "Evening", license_number: "DOC002", is_available: true}
+            ];
+            
+            beds = [
+                {id: 1, bed_number: "G001", bed_type: "general", ward: "Ward A", status: "available", patient_id: null, assigned_at: ""},
+                {id: 2, bed_number: "ICU001", bed_type: "icu", ward: "ICU", status: "available", patient_id: null, assigned_at: ""},
+                {id: 3, bed_number: "ER001", bed_type: "emergency", ward: "Emergency", status: "occupied", patient_id: 1, assigned_at: "2024-01-15 10:30:00"}
+            ];
+            
+            medicines = [
+                {id: 1, name: "Paracetamol", expiry_date: "2025-12-31", quantity: 100, unit_price: 5.50, category: "Painkiller", minimum_stock_level: 20, is_low_stock: false, is_expired: false},
+                {id: 2, name: "Amoxicillin", expiry_date: "2024-06-30", quantity: 5, unit_price: 15.75, category: "Antibiotic", minimum_stock_level: 10, is_low_stock: true, is_expired: false}
+            ];
+        }
+
+        // Login function
+        function login(event) {
+            event.preventDefault();
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            
+            // Simulate authentication
+            const users = [
+                {username: "admin", password: "admin123", role: "admin"},
+                {username: "doctor", password: "doctor123", role: "doctor"},
+                {username: "patient", password: "patient123", role: "patient"}
+            ];
+            
+            const user = users.find(u => u.username === username && u.password === password);
+            
+            if (user) {
+                currentUser = user;
+                showDashboard();
+                showAlert("Login successful!", "success");
+            } else {
+                showAlert("Invalid credentials!", "error");
+            }
+        }
+
+        // Show dashboard
+        function showDashboard() {
+            document.getElementById('loginForm').style.display = 'none';
+            document.getElementById('dashboard').style.display = 'block';
+            initializeData();
+            updateDashboard();
+            loadAllData();
+        }
+
+        // Logout function
+        function logout() {
+            currentUser = null;
+            document.getElementById('loginForm').style.display = 'block';
+            document.getElementById('dashboard').style.display = 'none';
+            document.getElementById('username').value = '';
+            document.getElementById('password').value = '';
+        }
+
+        // Update dashboard statistics
+        function updateDashboard() {
+            document.getElementById('totalPatients').textContent = patients.length;
+            document.getElementById('totalDoctors').textContent = doctors.length;
+            document.getElementById('totalBeds').textContent = beds.length;
+            document.getElementById('availableBeds').textContent = beds.filter(b => b.status === 'available').length;
+            document.getElementById('totalMedicines').textContent = medicines.length;
+            document.getElementById('lowStockMedicines').textContent = medicines.filter(m => m.is_low_stock).length;
+        }
+
+        // Load all data into tables
+        function loadAllData() {
+            loadPatientsTable();
+            loadDoctorsTable();
+            loadBedsTable();
+            loadMedicinesTable();
+        }
+
+        // Load patients table
+        function loadPatientsTable() {
+            const tbody = document.getElementById('patientsTable');
+            tbody.innerHTML = '';
+            
+            patients.forEach(patient => {
+                const row = tbody.insertRow();
+                row.innerHTML = `
+                    <td>${patient.id}</td>
+                    <td>${patient.first_name} ${patient.last_name}</td>
+                    <td>${patient.age}</td>
+                    <td>${patient.gender}</td>
+                    <td>${patient.phone}</td>
+                    <td>${patient.email}</td>
+                    <td>${patient.medical_history}</td>
+                    <td>${patient.allergies}</td>
+                `;
+            });
+        }
+
+        // Load doctors table
+        function loadDoctorsTable() {
+            const tbody = document.getElementById('doctorsTable');
+            tbody.innerHTML = '';
+            
+            doctors.forEach(doctor => {
+                const row = tbody.insertRow();
+                row.innerHTML = `
+                    <td>${doctor.id}</td>
+                    <td>${doctor.first_name} ${doctor.last_name}</td>
+                    <td>${doctor.specialization}</td>
+                    <td>${doctor.phone}</td>
+                    <td>${doctor.email}</td>
+                    <td>${doctor.shift}</td>
+                    <td>${doctor.license_number}</td>
+                    <td><span class="status-available">Available</span></td>
+                `;
+            });
+        }
+
+        // Load beds table
+        function loadBedsTable() {
+            const tbody = document.getElementById('bedsTable');
+            tbody.innerHTML = '';
+            
+            beds.forEach(bed => {
+                const row = tbody.insertRow();
+                const statusClass = bed.status === 'available' ? 'status-available' : 'status-occupied';
+                const statusText = bed.status === 'available' ? 'Available' : 'Occupied';
+                
+                row.innerHTML = `
+                    <td>${bed.id}</td>
+                    <td>${bed.bed_number}</td>
+                    <td>${bed.bed_type}</td>
+                    <td>${bed.ward}</td>
+                    <td><span class="${statusClass}">${statusText}</span></td>
+                    <td>${bed.patient_id || '-'}</td>
+                    <td>${bed.assigned_at || '-'}</td>
+                    <td>
+                        ${bed.status === 'available' ? 
+                            `<button onclick="assignBed(${bed.id})" class="btn btn-primary" style="padding: 5px 10px; font-size: 12px;">Assign</button>` :
+                            `<button onclick="releaseBed(${bed.id})" class="btn btn-danger" style="padding: 5px 10px; font-size: 12px;">Release</button>`
+                        }
+                    </td>
+                `;
+            });
+        }
+
+        // Load medicines table
+        function loadMedicinesTable() {
+            const tbody = document.getElementById('medicinesTable');
+            tbody.innerHTML = '';
+            
+            medicines.forEach(medicine => {
+                const row = tbody.insertRow();
+                const statusClass = medicine.is_low_stock ? 'status-low-stock' : 'status-available';
+                const statusText = medicine.is_low_stock ? 'Low Stock' : 'Available';
+                
+                row.innerHTML = `
+                    <td>${medicine.id}</td>
+                    <td>${medicine.name}</td>
+                    <td>${medicine.expiry_date}</td>
+                    <td>${medicine.quantity}</td>
+                    <td>$${medicine.unit_price}</td>
+                    <td>${medicine.category}</td>
+                    <td>${medicine.minimum_stock_level}</td>
+                    <td><span class="${statusClass}">${statusText}</span></td>
+                `;
+            });
+        }
+
+        // Add patient
+        function addPatient() {
+            const first_name = document.getElementById('patientFirstName').value;
+            const last_name = document.getElementById('patientLastName').value;
+            const age = document.getElementById('patientAge').value;
+            const gender = document.getElementById('patientGender').value;
+            const phone = document.getElementById('patientPhone').value;
+            const email = document.getElementById('patientEmail').value;
+            const medical_history = document.getElementById('patientHistory').value;
+            const allergies = document.getElementById('patientAllergies').value;
+            
+            if (!first_name || !last_name || !age || !gender) {
+                showAlert("Please fill in all required fields!", "error");
+                return;
+            }
+            
+            const newPatient = {
+                id: patients.length + 1,
+                first_name,
+                last_name,
+                age: parseInt(age),
+                gender,
+                phone,
+                email,
+                medical_history,
+                allergies
+            };
+            
+            patients.push(newPatient);
+            loadPatientsTable();
+            updateDashboard();
+            clearPatientForm();
+            showAlert("Patient added successfully!", "success");
+        }
+
+        // Add doctor
+        function addDoctor() {
+            const first_name = document.getElementById('doctorFirstName').value;
+            const last_name = document.getElementById('doctorLastName').value;
+            const specialization = document.getElementById('doctorSpecialization').value;
+            const phone = document.getElementById('doctorPhone').value;
+            const email = document.getElementById('doctorEmail').value;
+            const shift = document.getElementById('doctorShift').value;
+            const license_number = document.getElementById('doctorLicense').value;
+            
+            if (!first_name || !last_name || !specialization) {
+                showAlert("Please fill in all required fields!", "error");
+                return;
+            }
+            
+            const newDoctor = {
+                id: doctors.length + 1,
+                first_name,
+                last_name,
+                specialization,
+                phone,
+                email,
+                shift,
+                license_number,
+                is_available: true
+            };
+            
+            doctors.push(newDoctor);
+            loadDoctorsTable();
+            updateDashboard();
+            clearDoctorForm();
+            showAlert("Doctor added successfully!", "success");
+        }
+
+        // Add bed
+        function addBed() {
+            const bed_number = document.getElementById('bedNumber').value;
+            const bed_type = document.getElementById('bedType').value;
+            const ward = document.getElementById('bedWard').value;
+            
+            if (!bed_number || !bed_type) {
+                showAlert("Please fill in all required fields!", "error");
+                return;
+            }
+            
+            const newBed = {
+                id: beds.length + 1,
+                bed_number,
+                bed_type,
+                ward,
+                status: "available",
+                patient_id: null,
+                assigned_at: ""
+            };
+            
+            beds.push(newBed);
+            loadBedsTable();
+            updateDashboard();
+            clearBedForm();
+            showAlert("Bed added successfully!", "success");
+        }
+
+        // Add medicine
+        function addMedicine() {
+            const name = document.getElementById('medicineName').value;
+            const expiry_date = document.getElementById('medicineExpiry').value;
+            const quantity = document.getElementById('medicineQuantity').value;
+            const unit_price = document.getElementById('medicinePrice').value;
+            const category = document.getElementById('medicineCategory').value;
+            const minimum_stock_level = document.getElementById('medicineMinStock').value;
+            
+            if (!name || !expiry_date || !quantity || !unit_price) {
+                showAlert("Please fill in all required fields!", "error");
+                return;
+            }
+            
+            const newMedicine = {
+                id: medicines.length + 1,
+                name,
+                expiry_date,
+                quantity: parseInt(quantity),
+                unit_price: parseFloat(unit_price),
+                category,
+                minimum_stock_level: parseInt(minimum_stock_level),
+                is_low_stock: parseInt(quantity) <= parseInt(minimum_stock_level),
+                is_expired: false
+            };
+            
+            medicines.push(newMedicine);
+            loadMedicinesTable();
+            updateDashboard();
+            clearMedicineForm();
+            showAlert("Medicine added successfully!", "success");
+        }
+
+        // Assign bed
+        function assignBed(bedId) {
+            const patientId = prompt("Enter Patient ID:");
+            if (patientId) {
+                const bed = beds.find(b => b.id === bedId);
+                if (bed) {
+                    bed.status = "occupied";
+                    bed.patient_id = parseInt(patientId);
+                    bed.assigned_at = new Date().toLocaleString();
+                    loadBedsTable();
+                    updateDashboard();
+                    showAlert("Bed assigned successfully!", "success");
+                }
+            }
+        }
+
+        // Release bed
+        function releaseBed(bedId) {
+            const bed = beds.find(b => b.id === bedId);
+            if (bed) {
+                bed.status = "available";
+                bed.patient_id = null;
+                bed.assigned_at = "";
+                loadBedsTable();
+                updateDashboard();
+                showAlert("Bed released successfully!", "success");
+            }
+        }
+
+        // Clear forms
+        function clearPatientForm() {
+            document.getElementById('patientFirstName').value = '';
+            document.getElementById('patientLastName').value = '';
+            document.getElementById('patientAge').value = '';
+            document.getElementById('patientGender').value = '';
+            document.getElementById('patientPhone').value = '';
+            document.getElementById('patientEmail').value = '';
+            document.getElementById('patientHistory').value = '';
+            document.getElementById('patientAllergies').value = '';
+        }
+
+        function clearDoctorForm() {
+            document.getElementById('doctorFirstName').value = '';
+            document.getElementById('doctorLastName').value = '';
+            document.getElementById('doctorSpecialization').value = '';
+            document.getElementById('doctorPhone').value = '';
+            document.getElementById('doctorEmail').value = '';
+            document.getElementById('doctorShift').value = '';
+            document.getElementById('doctorLicense').value = '';
+        }
+
+        function clearBedForm() {
+            document.getElementById('bedNumber').value = '';
+            document.getElementById('bedType').value = '';
+            document.getElementById('bedWard').value = '';
+        }
+
+        function clearMedicineForm() {
+            document.getElementById('medicineName').value = '';
+            document.getElementById('medicineExpiry').value = '';
+            document.getElementById('medicineQuantity').value = '';
+            document.getElementById('medicinePrice').value = '';
+            document.getElementById('medicineCategory').value = '';
+            document.getElementById('medicineMinStock').value = '10';
+        }
+
+        // Show alert
+        function showAlert(message, type) {
+            const alertDiv = document.createElement('div');
+            alertDiv.className = `alert alert-${type}`;
+            alertDiv.textContent = message;
+            
+            const container = document.querySelector('.container');
+            container.insertBefore(alertDiv, container.firstChild);
+            
+            setTimeout(() => {
+                alertDiv.remove();
+            }, 3000);
+        }
+
+        // Initialize on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('Pharmacy Management System Frontend Loaded');
+        });
+    </script>
+</body>
+</html>
+
+
+
